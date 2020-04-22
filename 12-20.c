@@ -4,10 +4,9 @@
 
 #include <stdio.h>
 #include <conio.h>
-#include <stdbool.h>
 #define MAX_ELM 256
 
-void insert(float*, int, float);
+void sort_dec(float* arr, int n);
 
 int main()
 {
@@ -16,11 +15,10 @@ int main()
 	do {
 		printf("m1[%i] = ", size1);
 		scanf_s("%f", &m1[size1]);
+		if ((int)m1[size1] & 1) m2[size2++] = m1[size1];
 	} while (m1[size1] && ++size1 < MAX_ELM);
 
-	for (int i = 0; i < size1; i++)
-		if ((int)m1[i] & 1)
-			insert(m2, size2++, m1[i]);
+	sort_dec(m2, size2);
 
 	printf("\n");
 	for (int i = 0; i < size2; i++)
@@ -30,19 +28,15 @@ int main()
 	return 0;
 }
 
-void insert(float* arr, int size, float value)
+void sort_dec(float* arr, int n) //bubble
 {
-	int pos = 0;
-	while (pos < size)
-		if (value > arr[pos++]) {
-			pos--;
-			break;
-		}
-
-	for (int i = pos, t; i < size; i++) {
-		t = arr[i];
-		arr[i] = value;
-		value = t;
-	}
-	arr[size] = value;
+	float t;
+	for (int i = 0; i < n - 1; i++)
+		for (int j = 0; j < n - i - 1; j++)
+			if (arr[j] < arr[j + 1])
+			{
+				t = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = t;
+			}
 }

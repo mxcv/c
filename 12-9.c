@@ -1,14 +1,13 @@
-//З довільного одновимірного масиву дійсних чисел сформувати масив, в
-//якому першу половину елементів упорядковано за спаданням, а другу – за
-//зростанням.
+//З довільного одновимірного масиву дійсних чисел
+//сформувати масив, в якому першу половину елементів
+//упорядковано за спаданням, а другу – за зростанням.
 
 #include <stdio.h>
 #include <conio.h>
 #include <stdbool.h>
 #define MAX_ELM 256
 
-void sort_asc(int*, int);
-void sort_dec(int*, int);
+void sort(int*, int, bool);
 
 int main()
 {
@@ -18,8 +17,8 @@ int main()
 		scanf_s("%i", &a[size]);
 	} while (a[size] && ++size < MAX_ELM);
 
-	sort_dec(a, size / 2);
-	sort_asc(&a[size / 2], size / 2 + (size & 1));
+	sort(a, size / 2, false);
+	sort(&a[size / 2], size / 2 + (size & 1), true);
 
 	printf("\n");
 	for (int i = 0; i < size; i++)
@@ -29,22 +28,11 @@ int main()
 	return 0;
 }
 
-void sort_asc(int* arr, int size)	//bubble
+void sort(int* arr, int size, bool asc)	//bubble
 {
 	for (int i = 0, t; i < size - 1; i++)
 		for (int j = 0; j < size - i - 1; j++)
-			if (arr[j] > arr[j + 1])
-			{
-				t = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = t;
-			}
-}
-void sort_dec(int* arr, int size)	//bubble
-{
-	for (int i = 0, t; i < size - 1; i++)
-		for (int j = 0; j < size - i - 1; j++)
-			if (arr[j] < arr[j + 1])
+			if (asc ? arr[j] > arr[j + 1] : arr[j] < arr[j + 1])
 			{
 				t = arr[j];
 				arr[j] = arr[j + 1];

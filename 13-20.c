@@ -2,6 +2,7 @@
 //в результуючому рядку символи за зростанням їх ASCII-кодів.
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <conio.h>
 #define SIZE 256
@@ -10,16 +11,28 @@ void sort(char*);
 
 int main()
 {
-	char s[SIZE * 2], s2[SIZE];
-	printf("Input the first string: ");
-	gets_s(s, SIZE);
-	printf("Input the second string: ");
-	gets_s(s2, SIZE);
+	char *buffer, *result;
+	int n;
 
-	strcat_s(s, s2);
-	sort(s);
+	printf("String number: ");
+	scanf_s("%i", &n);
+	if (n < 1) return 1;
 
-	printf("\nConcatenated sorted string: %s", s);
+	buffer = (char*)malloc(SIZE * sizeof(char));
+	result = (char*)malloc(SIZE * sizeof(char) * n);
+	if (!buffer || !result) return 1;
+	gets_s(result, SIZE * n);
+	// skips left '\n' in the stream and sets '\0' for the next strcat
+
+	for (int i = 0; i < n; i++)
+	{
+		printf("%i. ", i + 1);
+		gets_s(buffer, SIZE);
+		strcat_s(result, SIZE * n, buffer);
+	}
+	
+	sort(result);
+	printf("\nConcatenated sorted string: %s", result);
 	_getch();
 	return 0;
 }

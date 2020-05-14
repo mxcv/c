@@ -31,10 +31,11 @@ void clear_stream() { char s[1]; gets_s(s, 1); }
 // scanf() leaves '\n' in the stream so it can cover gets()
 void error();
 
-void show(struct Employee* arr, int size);
+void show(struct Employee* arr, int size, int number);
 void add(struct Employee** arr, int* size, int* max_size);
 void edit(struct Employee* arr, int size);
 void del(struct Employee* arr, int* size);
+void season(struct Employee* arr, int size);
 
 int main()
 {
@@ -43,15 +44,16 @@ int main()
 
 	while (true)
 	{
-		printf("\t\tEmployees\n\nAdd\n\nEdit\n\nDelete\n\nClear\n\n");
-		show(base, size);
+		printf("\t\tEmployees\n\nAdd\n\nEdit\n\nDelete\n\nClear\n\nSeason birth\n\n");
+		show(base, size, 0);
 
-		switch (choose(4, 7, 2, 1))
+		switch (choose(5, 13, 2, 1))
 		{
-		case 1: add(&base, &size, &max_size);	break;
-		case 2: edit(base, size);				break;
-		case 3: del(base, &size);				break;
-		case 4: size = 0;						break;
+		case 1: add(&base, &size, &max_size); break;
+		case 2: edit(base, size); break;
+		case 3: del(base, &size); break;
+		case 4: size = 0; break;
+		case 5: season(base, size); break;
 		default:
 			free(base);
 			return 0;
@@ -104,7 +106,8 @@ void error()
 	printf("Something went wrong...");
 	Sleep(2000);
 }
-void show(struct Employee* arr, int size)
+
+void show(struct Employee* arr, int size, int number)
 {
 	for (int i = 0; i < size; ++i)
 	{
@@ -113,7 +116,7 @@ void show(struct Employee* arr, int size)
 		char string_full_birthday[22];
 		strftime(string_full_birthday, 22, "\tBirthday:\t%F", &full_birthday);
 
-		printf("#%i.\n", i + 1);
+		printf("#%i.\n", number ? number : i + 1);
 		printf("\tName:\t\t%s\n", arr[i].name);
 		puts(string_full_birthday);
 		printf("\tGender:\t\t%s\n", arr[i].is_male ? "male" : "female");
@@ -176,4 +179,28 @@ void del(struct Employee* arr, int* size)
 			arr[i] = arr[i + 1];
 	}
 	else error();
+}
+void season(struct Employee* arr, int size)
+{
+	int m[3];
+	struct tm full_birthday;
+	printf("Employees who were born in:\n\nWinter\n\nSpring\n\nSummer\n\nAutumn");
+	switch (choose(4, 7, 2, 1))
+	{
+	case 1: *m = 11;	break;
+	case 2: *m =  2;	break;
+	case 3: *m =  5;	break;
+	case 4: *m =  8;	break;
+	default: return;
+	}
+	m[1] = *m != 11 ? m[0] + 1 : 0;
+	m[2] = m[1] + 1;
+
+	for (int i = 1; i <= size; ++i, ++arr)
+	{
+		localtime_s(&full_birthday, &arr->birthday);
+		if (full_birthday.tm_mon == m[0] || full_birthday.tm_mon == m[1] || full_birthday.tm_mon == m[2])
+			show(arr, 1, i);
+	}
+	system("pause");
 }

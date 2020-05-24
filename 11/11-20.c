@@ -43,9 +43,7 @@ int main()
 
 void ShowMatrix(int arr[][COLS], int r, int c, const char* name)
 {
-	printf("\n");
-	printf(name);
-	printf("\n\n");
+	printf("\n%s\n\n", name);
 	for (int i = 0; i < r; i++)
 	{
 		for (int j = 0; j < c; j++)

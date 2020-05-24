@@ -172,7 +172,7 @@ void edit(struct Employee* arr, int size)
 void del(struct Employee* arr, int* size)
 {
 	int n;
-	if (fill_num(&n, size))
+	if (fill_num(&n, *size))
 	{
 		--* size;
 		for (int i = n; i < *size; ++i)

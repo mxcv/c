@@ -16,12 +16,12 @@ int main()
 	int a[256], size = 0, read_status;
 
 	fprintf(stdout, "File name: ");
-	gets_s(file_name, sizeof(file_name));
+	gets_s(file_name, sizeof(file_name) / sizeof(*file_name));
 
 	FILE* file = fopen(file_name, "r");
 	if (!file) return 1;
 	do read_status = fscanf(file, "%i", a + size);
-	while (read_status && read_status != EOF && ++size < sizeof(a));
+	while (read_status && read_status != EOF && ++size < sizeof(a) / sizeof(*a));
 	fclose(file);
 
 	printf("Source: ");
